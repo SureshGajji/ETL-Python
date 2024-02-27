@@ -3,11 +3,7 @@ import oracledb
 import boto3
 from io import StringIO
 
-clientpath = (
-    r"C:\Users\Suresh.gajji\Downloads\ "
-    r"instantclient-basic-windows.x64-19.22.0.0.0dbru\ "
-    r"instantclient_19_22"
-)
+clientpath = "C:/Users/Suresh.gajji/Downloads/instantclient-basic-windows.x64-19.22.0.0.0dbru/instantclient_19_22"
 oracledb.init_oracle_client(lib_dir=clientpath)
 
 # Oracle Credentails
@@ -44,7 +40,7 @@ try:
         Bucket=s3_bucket_name, Key=s3_key, Body=csv_buffer.getvalue()
         )
 
-    print("Customers CSV file uploaded to S3 successfully.")
+    print("Payments CSV file uploaded to S3 successfully.")
 
 except oracledb.Error as error:
     print('Error occurred:', error)
