@@ -8,6 +8,7 @@ clientpath = (
     r"instantclient-basic-windows.x64-19.22.0.0.0dbru\ "
     r"instantclient_19_22"
 )
+
 oracledb.init_oracle_client(lib_dir=clientpath)
 
 # Oracle Credentails
@@ -20,12 +21,12 @@ aws_access_key_id = 'AKIAUB4IGVAKT7ML4OWR'
 aws_secret_access_key = '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'
 region_name = 'us-east-1'
 s3_bucket_name = 'etlpython'
-s3_key = 'Customers.csv'
+s3_key = 'Employees.csv'
 
 try:
     connection = oracledb.connect(user=username, password=password, dsn=dsn)
     cursor = connection.cursor()
-    sql_query = "SELECT * from classicmodels.Customers"
+    sql_query = "SELECT * from classicmodels.Employees"
     cursor.execute(sql_query)
     result = cursor.fetchall()
     csv_buffer = StringIO()
