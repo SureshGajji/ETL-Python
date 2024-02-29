@@ -13,6 +13,7 @@ dsn = '54.224.209.13:1521/xe'
 
 schema = 'cm_20050609'
 schema_password = 'cm_20050609123'
+ETL_BATCH_DATE = '2001-01-01'
 
 connection = oracledb.connect(user=username, password=password, dsn=dsn)
 cursor = connection.cursor()
@@ -35,4 +36,4 @@ x = "C:/Users/Suresh.gajji/Desktop/ETL Python/ETL/ETL-Python/Oracle_to_S3"
 for file in python_files:
     y = x+"/"+file
     print('path', y)
-    subprocess.call(['python', x+"/"+file])
+    subprocess.call(['python', x+"/"+file, ETL_BATCH_DATE])

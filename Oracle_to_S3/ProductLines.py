@@ -1,6 +1,7 @@
 import csv
 import oracledb
 import boto3
+import sys
 from io import StringIO
 
 clientpath = ("C:/Users/Suresh.gajji/Downloads/instantclient-basic-"
@@ -12,6 +13,8 @@ username = 'f23suresh'
 password = 'f23suresh123'
 dsn = '54.224.209.13:1521/xe'
 
+ETL_BATCH_DATE = sys.argv[1]
+
 # AWS Credentails
 aws_access_key_id = 'AKIAUB4IGVAKT7ML4OWR'
 aws_secret_access_key = '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'
@@ -22,7 +25,12 @@ s3_key = 'ProductLines.csv'
 try:
     connection = oracledb.connect(user=username, password=password, dsn=dsn)
     cursor = connection.cursor()
-    sql_query = "SELECT * from classicmodels.ProductLines"
+    sql_query = ("SELECT PRODUCTLINE"
+                 ",CREATE_TIMESTAMP"
+                 ", UPDATE_TIMESTAMP"
+                 " from ProductLines@f23suresh_dblink_classicmodels"
+                 " WHERE to_char(UPDATE_TIMESTAMP,'yyyy-mm-dd')"
+                 f">='{ETL_BATCH_DATE}'")
     cursor.execute(sql_query)
     result = cursor.fetchall()
     csv_buffer = StringIO()
