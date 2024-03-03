@@ -25,9 +25,11 @@ python_files = ['Customers.py', 'Employees.py', 'Offices.py',
                 'OrderDetails.py', 'Orders.py', 'Payments.py',
                 'ProductLines.py', 'Products.py']
 x = "C:/Users/Suresh.gajji/Desktop/ETL Python/ETL/ETL-Python/S3_to_Stage"
-
+exe = []
 for file in python_files:
     y = x+"/"+file
     print('path', y)
-    subprocess.call(['python', x+"/"+file])
+    exe.append(subprocess.Popen(['python', x+"/"+file]))
+for process in exe:
+    process.communicate()
 print("All tables data loaded successfully")
