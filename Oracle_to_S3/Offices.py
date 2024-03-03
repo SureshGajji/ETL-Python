@@ -15,9 +15,6 @@ dsn = '54.224.209.13:1521/xe'
 
 ETL_BATCH_DATE = sys.argv[1]
 
-# AWS Credentails
-aws_access_key_id = 'AKIAUB4IGVAKT7ML4OWR'
-aws_secret_access_key = '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'
 region_name = 'us-east-1'
 s3_bucket_name = 'etlpython'
 s3_key = 'Offices.csv'
@@ -50,8 +47,7 @@ try:
     connection.close()
 
     s3 = boto3.client(
-        's3', aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key, region_name=region_name
+        's3', region_name=region_name
         )
     s3.put_object(
         Bucket=s3_bucket_name, Key=s3_key, Body=csv_buffer.getvalue()
