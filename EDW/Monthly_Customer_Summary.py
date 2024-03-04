@@ -14,12 +14,13 @@ def load_monthly_customer_smy(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE):
     )
     cur = conn.cursor()
     sql1 = f"""
-   DELETE FROM devdw.monthly_customer_summary WHERE start_of_the_month_date>=
-     date_format('{ETL_BATCH_DATE}','%Y-%m-01');;
+   DELETE FROM devdw.monthly_customer_summary
+   WHERE start_of_the_month_date >=
+     date_trunc('month', '{ETL_BATCH_DATE}'::date);
    """
     sql2 = f"""
-   INSERT INTO f23suresh_devdw.monthly_customer_summary
-(SELECT date_format(summary_date,'%Y-%m-01') start_of_the_month_date,
+   INSERT INTO devdw.monthly_customer_summary
+    (SELECT date_trunc('month', summary_date::date) start_of_the_month_date,
        dw_customer_id,
        SUM(order_count),
        SUM(order_apd),
@@ -49,12 +50,11 @@ def load_monthly_customer_smy(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE):
         current_timestamp dw_create_timestamp,
        '{ETL_BATCH_NO}',
        '{ETL_BATCH_DATE}'
-FROM devdw.daily_customer_summary
-WHERE date_format(summary_date,'%Y-%m-01')>=
- date_format('{ETL_BATCH_DATE}','%Y-%m-01')
-GROUP BY date_format(summary_date,'%Y-%m-01'),
-         dw_customer_id);
-    """
+    FROM devdw.daily_customer_summary
+    WHERE date_trunc('month', summary_date::date)>=
+      date_trunc('month', '{ETL_BATCH_DATE}'::date)
+    GROUP BY date_trunc('month', summary_date::date),
+         dw_customer_id);    """
     cur.execute(sql1)
     cur.execute(sql2)
     conn.commit()

@@ -15,11 +15,12 @@ def load_monthly_product_smy(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE):
     cur = conn.cursor()
     sql1 = f"""
    DELETE FROM devdw.monthly_product_summary
-   WHERE start_of_the_month_date>= date_format('{ETL_BATCH_DATE}','%Y-%m-01');
+   WHERE start_of_the_month_date>=
+     date_trunc('month', '{ETL_BATCH_DATE}'::date);
    """
     sql2 = f"""
    INSERT INTO devdw.monthly_product_summary
-    (SELECT date_format(summary_date,'%Y-%m-01') start_of_the_date,
+    (SELECT date_trunc('month', summary_date::date) start_of_the_date,
        dw_product_id,
        SUM(customer_apd) customer_apd,
        (CASE WHEN SUM(customer_apd) > 0 THEN 1 ELSE 0 END) customer_apm,
@@ -35,9 +36,9 @@ def load_monthly_product_smy(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE):
        '{ETL_BATCH_NO}',
        '{ETL_BATCH_DATE}'
     FROM devdw.daily_product_summary
-    WHERE date_format(summary_date,'%Y-%m-01')>=
-      date_format('${ETL_BATCH_DATE}','%Y-%m-01')
-    GROUP BY date_format(summary_date,'%Y-%m-01'),
+    WHERE date_trunc('month', summary_date::date)>=
+      date_trunc('month', '{ETL_BATCH_DATE}'::date)
+    GROUP BY date_trunc('month', summary_date::date),
          dw_product_id);
     """
     cur.execute(sql1)
