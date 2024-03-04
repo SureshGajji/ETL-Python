@@ -1,7 +1,8 @@
 import psycopg2
+import sys
 
-ETL_BATCH_NO = 1001
-ETL_BATCH_DATE = '2001-01-01'
+ETL_BATCH_NO = sys.argv[1]
+ETL_BATCH_DATE = sys.argv[2]
 
 
 def load_daily_customer_summary(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE):

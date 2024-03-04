@@ -1,5 +1,6 @@
 import oracledb
 import subprocess
+import sys
 
 
 clientpath = ("C:/Users/Suresh.gajji/Downloads/instantclient-basic-"
@@ -11,9 +12,10 @@ username = 'f23suresh'
 password = 'f23suresh123'
 dsn = '54.224.209.13:1521/xe'
 
-schema = 'cm_20050609'
-schema_password = 'cm_20050609123'
-ETL_BATCH_DATE = '2001-01-01'
+ETL_BATCH_DATE = sys.argv[2]
+
+schema = sys.argv[3]
+schema_password = sys.argv[4]
 
 connection = oracledb.connect(user=username, password=password, dsn=dsn)
 cursor = connection.cursor()
