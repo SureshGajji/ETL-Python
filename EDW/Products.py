@@ -5,7 +5,7 @@ ETL_BATCH_NO = sys.argv[1]
 ETL_BATCH_DATE = sys.argv[2]
 
 
-def load_productlines(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE):
+def load_products(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE):
     conn = psycopg2.connect(
         dbname=redshift_params['dbname'],
         user=redshift_params['user'],
@@ -84,4 +84,4 @@ if __name__ == "__main__":
                  'redshift-serverless.amazonaws.com'),
         'port': '5439'
     }
-load_productlines(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE)
+load_products(redshift_params, ETL_BATCH_NO, ETL_BATCH_DATE)
